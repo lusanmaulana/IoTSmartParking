@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvGedung"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Nama Gedung"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ivGedung" />
+
+    <ImageView
+        android:id="@+id/ivGedung"
+        android:layout_width="161dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/tvGedung"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+</LinearLayout>
