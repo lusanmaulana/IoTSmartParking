@@ -150,4 +150,10 @@ public class MenuActivity extends AppCompatActivity implements OnItemSelectedLis
         detail.putExtra(EXTRA_MESG_GEDUNG, ""+idChosen);
         startActivity(detail);
     }
+
+    public void btnMapsOnClick(View view){
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
