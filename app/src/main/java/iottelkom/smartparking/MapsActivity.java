@@ -1,6 +1,6 @@
 package iottelkom.smartparking;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,9 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,7 +24,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationListener;
 
 
 public class MapsActivity extends FragmentActivity implements
@@ -31,14 +32,15 @@ public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener{
 
+    boolean sCam = false;
     private static final int MY_PERMISSIONS_REQUEST = 99;
     GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
     LocationRequest mLocationRequest;
     private GoogleMap mMap;
     private Marker mNow;
 
     protected synchronized void buildGoogleApiClient() {
+        Log.e("cek","buildgac");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -46,18 +48,19 @@ public class MapsActivity extends FragmentActivity implements
                 .build();
     }
 
-    @SuppressLint("RestrictedApi")
     protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
+        Log.e("cek","create locreq");
+        mLocationRequest = LocationRequest.create();
         //10 detik sekali minta lokasi (10000ms = 10 detik)
-        mLocationRequest.setInterval(10000);
+        mLocationRequest.setInterval(5000);
         //tapi tidak boleh lebih cepat dari 5 detik
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setFastestInterval(3000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
 
     public void ambilLokasi() {
+        Log.e("cek","ambil lokasi");
         /* mulai Android 6 (API 23), pemberian persmission
            dilakukan secara dinamik (tdk diawal)
            untuk jenis2 persmisson tertentu, termasuk lokasi
@@ -65,22 +68,23 @@ public class MapsActivity extends FragmentActivity implements
         // cek apakah sudah diijinkan oleh user, jika belum tampilkan dialog
         // pastikan permission yg diminta cocok dgn manifest
         if (ActivityCompat.checkSelfPermission (this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED )
         {
             //belum ada ijin, tampilkan dialog
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST);
             return;
         }
         //ambil lokasi terakhir
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        Log.e("cek","onreqperres");
         if (requestCode == MY_PERMISSIONS_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 ambilLokasi();
@@ -151,6 +155,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.e("cek","con");
         ambilLokasi();
     }
 
@@ -166,6 +171,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        mNow.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+        Log.e("cek","locchange");
+        LatLng pNow = new LatLng(location.getLatitude(),location.getLongitude());
+        mNow.setPosition(pNow);
+        if(!sCam){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pNow,18));
+            sCam = !sCam;
+        }
     }
 }
