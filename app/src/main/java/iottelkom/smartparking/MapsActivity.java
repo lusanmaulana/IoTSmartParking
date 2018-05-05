@@ -25,6 +25,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -38,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements
     LocationRequest mLocationRequest;
     private GoogleMap mMap;
     private Marker mNow;
+    tempatParkir tParkir;
 
     protected synchronized void buildGoogleApiClient() {
         Log.e("cek","buildgac");
@@ -121,6 +124,18 @@ public class MapsActivity extends FragmentActivity implements
         mapFragment.getMapAsync(this);
         buildGoogleApiClient();
         createLocationRequest();
+
+        tParkir = new tempatParkir();
+        tParkir.addLatLong(-6.861967, 107.589866);
+        tParkir.addNama("Gedung FPMIPA-A");
+        tParkir.addLatLong(-6.860418, 107.589889);
+        tParkir.addNama("Gedung FPMIPA-C");
+        tParkir.addLatLong(-6.861049, 107.590006);
+        tParkir.addNama("Gedung FPOK");
+        tParkir.addLatLong(-6.860932, 107.593793);
+        tParkir.addNama("Gedung FPBS");
+        tParkir.addLatLong(-6.862487, 107.593060);
+        tParkir.addNama("Gedung Pascasarjana");
     }
 
 
@@ -139,7 +154,17 @@ public class MapsActivity extends FragmentActivity implements
 
         // Add a marker in GIK and move the camera
         LatLng gik = new LatLng(-6.860418, 107.589889);
-        mNow = mMap.addMarker(new MarkerOptions().position(gik).title("Marker in GIK"));
+        mNow = mMap.addMarker(new MarkerOptions().position(gik).title("Posisi sekarang."));
+        ArrayList<LatLng> LatLong = tParkir.getLatLong();
+        int i = 0;
+        LatLng oLatLong;
+        for(String index : tParkir.getNama()){
+            Log.e("cek",index);
+            Log.e("cek",""+LatLong.size());
+            oLatLong = LatLong.get(i);
+            mMap.addMarker(new MarkerOptions().position(oLatLong).title(index));
+            i++;
+        }
 
         // batas UPI, kiri-bawah dan kanan-atas (urutan harus spt itu)
         LatLngBounds UPI = new LatLngBounds(
