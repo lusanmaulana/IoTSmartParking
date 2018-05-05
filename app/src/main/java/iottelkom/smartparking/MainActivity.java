@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,9 +55,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent detail = getIntent();
+        Intent main = getIntent();
         TextView tvGedung = findViewById(R.id.tvGedung);
-        tvGedung.setText(detail.getStringExtra(MenuActivity.EXTRA_MESG_GEDUNG));
+        Log.e("cek",main.getStringExtra(MenuActivity.EXTRA_MESG_GEDUNG));
+        tvGedung.setText(main.getStringExtra(MenuActivity.EXTRA_MESG_GEDUNG));
 
         simpleGrid = findViewById(R.id.gridview);
         myAdapter = new MyAdapter(this,R.layout.devicelist,devlist);

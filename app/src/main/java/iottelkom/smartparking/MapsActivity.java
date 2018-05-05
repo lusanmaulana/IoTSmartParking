@@ -2,6 +2,7 @@ package iottelkom.smartparking;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener{
 
+    String gdChosen = "";
     boolean sCam = false;
     private static final int MY_PERMISSIONS_REQUEST = 99;
     GoogleApiClient mGoogleApiClient;
@@ -174,6 +176,25 @@ public class MapsActivity extends FragmentActivity implements
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         int padding = (int) (width * 0.12); // offset dari edges
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                gdChosen = marker.getTitle();
+                return false;
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent main = new Intent(MapsActivity.this, MainActivity.class);
+                main.putExtra(MenuActivity.EXTRA_MESG_GEDUNG, "" + gdChosen);
+                Log.e("cek",main.getStringExtra(MenuActivity.EXTRA_MESG_GEDUNG));
+                startActivity(main);
+            }
+        });
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(UPI, width, height, padding));
 
     }

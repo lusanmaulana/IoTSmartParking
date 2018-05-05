@@ -154,6 +154,5 @@ public class MenuActivity extends AppCompatActivity implements OnItemSelectedLis
     public void btnMapsOnClick(View view){
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
         startActivity(intent);
-        finish();
     }
 }
