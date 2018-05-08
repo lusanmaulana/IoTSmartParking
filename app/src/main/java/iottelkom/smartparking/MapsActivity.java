@@ -10,7 +10,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,7 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 
-public class MapsActivity extends FragmentActivity implements
+public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -127,6 +131,9 @@ public class MapsActivity extends FragmentActivity implements
         buildGoogleApiClient();
         createLocationRequest();
 
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         tParkir = new tempatParkir();
         tParkir.addLatLong(-6.861967, 107.589866);
         tParkir.addNama("Gedung FPMIPA-A");
@@ -140,6 +147,12 @@ public class MapsActivity extends FragmentActivity implements
         tParkir.addNama("Gedung Pascasarjana");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
 
     /**
      * Manipulates the map once available.
