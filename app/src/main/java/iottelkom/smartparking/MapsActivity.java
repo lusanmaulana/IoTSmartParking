@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -36,7 +37,6 @@ public class MapsActivity extends FragmentActivity implements
         LocationListener{
 
     String gdChosen = "";
-    boolean sCam = false;
     private static final int MY_PERMISSIONS_REQUEST = 99;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
@@ -56,9 +56,9 @@ public class MapsActivity extends FragmentActivity implements
     protected void createLocationRequest() {
         Log.e("cek","create locreq");
         mLocationRequest = LocationRequest.create();
-        //10 detik sekali minta lokasi (10000ms = 10 detik)
+        //10 detik sekali minta lokasi (5000ms = 5 detik)
         mLocationRequest.setInterval(5000);
-        //tapi tidak boleh lebih cepat dari 5 detik
+        //tapi tidak boleh lebih cepat dari 3 detik
         mLocationRequest.setFastestInterval(3000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
@@ -164,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements
             Log.e("cek",index);
             Log.e("cek",""+LatLong.size());
             oLatLong = LatLong.get(i);
-            mMap.addMarker(new MarkerOptions().position(oLatLong).title(index));
+            mMap.addMarker(new MarkerOptions().position(oLatLong).title(index).icon(BitmapDescriptorFactory.fromResource(R.drawable.pincar)));
             i++;
         }
 
@@ -220,9 +220,5 @@ public class MapsActivity extends FragmentActivity implements
         Log.e("cek","locchange");
         LatLng pNow = new LatLng(location.getLatitude(),location.getLongitude());
         mNow.setPosition(pNow);
-        if(!sCam){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pNow,18));
-            sCam = !sCam;
-        }
     }
 }
