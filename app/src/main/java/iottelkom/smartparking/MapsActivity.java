@@ -8,13 +8,13 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import iottelkom.smartparking.utils.SMPreferences;
+
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
@@ -46,6 +48,7 @@ public class MapsActivity extends AppCompatActivity implements
     LocationRequest mLocationRequest;
     private GoogleMap mMap;
     private Marker mNow;
+    private SMPreferences smPreferences;
     tempatParkir tParkir;
 
     protected synchronized void buildGoogleApiClient() {
@@ -130,6 +133,7 @@ public class MapsActivity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
         buildGoogleApiClient();
         createLocationRequest();
+        smPreferences = new SMPreferences(this);
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -148,10 +152,30 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onDestroy(){
+        super.onDestroy();
+        smPreferences.store(SMPreferences.KEY_LOGIN,SMPreferences.NOT_LOGIN);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.lout:
+                smPreferences.store(SMPreferences.KEY_LOGIN, SMPreferences.NOT_LOGIN);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**

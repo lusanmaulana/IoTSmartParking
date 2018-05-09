@@ -4,6 +4,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorPressedHighlight"
     android:orientation="vertical"
     android:paddingLeft="50dp"
     android:paddingRight="50dp">
@@ -53,32 +54,30 @@
             android:id="@+id/cbKeepSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:text="Remember Me"
-            android:textAlignment="viewStart"
-            android:gravity="start" />
+            android:textAlignment="viewStart" />
 
         <Button
             android:id="@+id/btnLogin"
+            style="@style/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="LOGIN"
-            style="@style/buttonStyle"
-            />
+            android:text="LOGIN" />
 
         <Button
             android:id="@+id/btnCreate"
+            style="@style/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="Create Account"
-            style="@style/buttonStyle"
-            />
+            android:text="Create Account" />
     </LinearLayout>
 </RelativeLayout>
