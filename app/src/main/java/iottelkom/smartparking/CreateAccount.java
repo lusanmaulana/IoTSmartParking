@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
-import iottelkom.smartparking.utils.DbUser;
+import iottelkom.smartparking.utils.DbParkir;
 
 /**
  * Created by kawakibireku on 11/13/17.
@@ -20,32 +20,29 @@ import iottelkom.smartparking.utils.DbUser;
 public class CreateAccount extends AppCompatActivity {
     int i;
     int status;
-    private Button btnCreate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
-        btnCreate = (Button) findViewById(R.id.btnCreate);
-        System.out.println("WEW");
+        Button btnCreate = findViewById(R.id.btnCreate);
 
         btnCreate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                System.out.println("Clicked");
-                DbUser db = new DbUser(getApplicationContext());
+                DbParkir db = new DbParkir(getApplicationContext());
                 db.open();
 
-                EditText etUsername = (EditText) findViewById(R.id.etNewUsername);
-                EditText etPassword = (EditText) findViewById(R.id.etNewPassword);
+                EditText etUsername = findViewById(R.id.etNewUsername);
+                EditText etPassword = findViewById(R.id.etNewPassword);
 
                 String uname = etUsername.getText().toString();
                 String pass = etPassword.getText().toString();
 
-                ArrayList<DbUser.Akun> akun = db.getAllUser();
+                ArrayList<DbParkir.Akun> akun = db.getAllUser();
                 i = akun.size();
 
                 if(uname.isEmpty() || pass.isEmpty()){
-                    Toasty.error(getApplicationContext(), String.format("Please Insert Data"), Toast.LENGTH_SHORT, true).show();
+                    Toasty.error(getApplicationContext(), "Mohon masukan data.", Toast.LENGTH_SHORT, true).show();
                 }else {
                     if (i == 0) {
                         System.out.println("input");
@@ -53,31 +50,30 @@ public class CreateAccount extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                         finish();
-                        Toast t = Toast.makeText(getApplicationContext(), "Akun berhasil dibuat", Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), "Akun berhasil dibuat.", Toast.LENGTH_LONG);
                         t.show();
                     } else {
-                        for (DbUser.Akun index : akun) {
+                        for (DbParkir.Akun index : akun) {
                             System.out.println("for");
-                            if (uname.equals(index.username.toString())) {
+                            if (uname.equals(index.username)) {
                                 System.out.println("cek username");
                                 status = 1;
                             }
                         }
                     }
                     if(status == 1){
-                        Toasty.error(getApplicationContext(), String.format("User Already Exist"), Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(getApplicationContext(), "Nama pengguna telah ada.", Toast.LENGTH_SHORT, true).show();
                         status = 0;
                     }else{
                         db.insertAkun(uname, pass);
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                         finish();
-                        Toast t = Toast.makeText(getApplicationContext(), "Akun berhasil dibuat", Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), "Akun berhasil dibuat.", Toast.LENGTH_LONG);
                         t.show();
                     }
                 }
-
-
+                db.close();
             }
         });
 

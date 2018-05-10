@@ -15,24 +15,21 @@ import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
 import iottelkom.smartparking.utils.SMPreferences;
-import iottelkom.smartparking.utils.DbUser;
+import iottelkom.smartparking.utils.DbParkir;
 
 /**
  * Created by kawakibireku on 11/7/17.
  */
 
 public class LoginActivity extends AppCompatActivity{
-    private String TAG;
 
-    private Button btnLogin;
     private EditText etxtUname;
     private EditText etxtPass;
-    private Button btnCreate;
-
     private SMPreferences smPreferences;
     private CheckBox cbKeepSignIn;
     int i;
     int status = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -40,14 +37,14 @@ public class LoginActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_login);
 
-        TAG = this.getClass().getSimpleName();
+        String TAG = this.getClass().getSimpleName();
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnCreate = (Button) findViewById(R.id.btnCreate);
-        etxtUname = (EditText) findViewById(R.id.etxtUsername);
-        etxtPass = (EditText) findViewById(R.id.etxtPassword);
+        Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnCreate = findViewById(R.id.btnCreate);
+        etxtUname = findViewById(R.id.etxtUsername);
+        etxtPass = findViewById(R.id.etxtPassword);
 
-        cbKeepSignIn = (CheckBox) findViewById(R.id.cbKeepSignIn);
+        cbKeepSignIn = findViewById(R.id.cbKeepSignIn);
 
         smPreferences = new SMPreferences(this);
 
@@ -58,7 +55,6 @@ public class LoginActivity extends AppCompatActivity{
             etxtUname.setText(username);
             etxtPass.setText(password);
             cbKeepSignIn.isChecked();
-//            Toasty.success(getApplicationContext(), String.format("Welcome %s",username), Toast.LENGTH_SHORT, true).show();
 
             Log.d(TAG,"logged in");
         } else {
@@ -71,12 +67,12 @@ public class LoginActivity extends AppCompatActivity{
                 String username = etxtUname.getText().toString();
                 String password = etxtPass.getText().toString();
 
-                DbUser db = new DbUser(getApplicationContext());
+                DbParkir db = new DbParkir(getApplicationContext());
                 db.open();
                 i=0;
-                ArrayList<DbUser.Akun> akun = db.getAllUser();
-                for(DbUser.Akun index : akun) {
-                    if (username.equals(index.username.toString()) && password.equals(index.password.toString())) {
+                ArrayList<DbParkir.Akun> akun = db.getAllUser();
+                for(DbParkir.Akun index : akun) {
+                    if (username.equals(index.username) && password.equals(index.password)) {
                         if (cbKeepSignIn.isChecked()) {
                             smPreferences.store(SMPreferences.KEY_LOGIN, SMPreferences.LOGGED_IN);
                             smPreferences.store(SMPreferences.KEY_REMEMBER_ME, SMPreferences.REMEMBER_ME);
@@ -98,12 +94,9 @@ public class LoginActivity extends AppCompatActivity{
                     finish();
                     status = 0;
                 } else {
-                    Toasty.error(getApplicationContext(), String.format("Failed to authenticate"), Toast.LENGTH_SHORT, true).show();
+                    Toasty.error(getApplicationContext(), "Failed to authenticate", Toast.LENGTH_SHORT, true).show();
                 }
-                /*
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                */
+                db.close();
             }
         });
 
@@ -114,5 +107,27 @@ public class LoginActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+
+        DbParkir db = new DbParkir(getApplicationContext());
+        db.open();
+        ArrayList<DbParkir.Place> plc = db.getAllPlace();
+        if(plc.size() == 0){
+            db.insertPlace("FPMIPA-C","UPI",-6.860485, 107.589896, "temp");
+            db.insertPlace("FPOK","UPI",-6.861039, 107.589971, "temp");
+            db.insertPlace("FPMIPA-A","UPI",-6.862009, 107.589885, "temp");
+            db.insertPlace("FIP","UPI",-6.861326, 107.590828, "temp");
+            db.insertPlace("University Center","UPI",-6.860741, 107.592310, "temp");
+            db.insertPlace("FPEB","UPI",-6.860645, 107.592932, "temp");
+            db.insertPlace("Pascasarjana","UPI",-6.862614, 107.592889, "temp");
+            db.insertPlace("FPBS","UPI",-6.860957, 107.593726, "temp");
+            db.insertPlace("Museum Pendidikan Nasional","UPI",-6.860036, 107.593817, "temp");
+            db.insertPlace("Gedung PKM","UPI",-6.862584, 107.593645, "temp");
+            db.insertPlace("Masjid Al-Furqon","UPI",-6.863350, 107.594058, "temp");
+            db.insertPlace("FPTK","UPI",-6.864122, 107.593999, "temp");
+            db.insertPlace("Gedung OASIS","Telkom Gegerkalong",-6.873642, 107.586658, "temp");
+            db.insertPlace("Bandung Digital Valley","Telkom Gegerkalong",-6.873328, 107.586967, "temp");
+            db.insertPlace("Gedung DDS","Telkom Gegerkalong",-6.873195, 107.587410, "temp");
+        }
+        db.close();
     }
 }

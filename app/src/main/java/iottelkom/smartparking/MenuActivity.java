@@ -21,18 +21,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import iottelkom.smartparking.utils.DbParkir;
 import iottelkom.smartparking.utils.SMPreferences;
 
 public class MenuActivity extends AppCompatActivity implements OnItemSelectedListener, OnItemClickListener {
 
     public static final String EXTRA_MESG_GEDUNG = "com.iottelkom.smartparking.GEDUNG";
-    private static final String[]items = {"UPI", "PT. Telkom Gerlong"};
     private SMPreferences smPreferences;
 
     ListView lvPlace;
     CustomListAdapter adapterL;
-    ArrayList<String> gedung = new ArrayList<>();
-
+    ArrayList<String> plc = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +41,25 @@ public class MenuActivity extends AppCompatActivity implements OnItemSelectedLis
         setSupportActionBar(myToolbar);
         smPreferences = new SMPreferences(this);
 
+        DbParkir db = new DbParkir(getApplicationContext());
+        db.open();
+        ArrayList<String> wilayah = db.getAllWilayah();
+        String[] items = new String[wilayah.size()];
+        items = wilayah.toArray(items);
+        db.close();
+
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String>adapterS = new ArrayAdapter<>(MenuActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, items);
 
         lvPlace = findViewById(R.id.lvPlace);
         lvPlace.setOnItemClickListener(this);
-        adapterL = new CustomListAdapter(this, R.layout.listviewlayout, gedung);
+        adapterL = new CustomListAdapter(this, R.layout.listviewlayout, plc);
         lvPlace.setAdapter(adapterL);
 
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterS);
         spinner.setOnItemSelectedListener(this);
-
     }
 
     @Override
@@ -86,27 +91,16 @@ public class MenuActivity extends AppCompatActivity implements OnItemSelectedLis
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
-
-        switch (index){
-            case 0:
-                gedung.clear();
-                gedung.add("FPMIPA-A");
-                gedung.add("FPMIPA-C");
-                gedung.add("FPOK");
-                gedung.add("FIP");
-                gedung.add("FPIPS");
-                gedung.add("FPEB");
-                gedung.add("FPBS");
-                adapterL.notifyDataSetChanged();
-                break;
-            case 1:
-                gedung.clear();
-                gedung.add("Oasis");
-                gedung.add("BDV");
-                gedung.add("DDS");
-                adapterL.notifyDataSetChanged();
-                break;
+        String wilayah = adapterView.getItemAtPosition(index).toString();
+        DbParkir db = new DbParkir(getApplicationContext());
+        db.open();
+        ArrayList<DbParkir.Place> P = db.getPlaceByWilayah(wilayah);
+        plc.clear();
+        for(DbParkir.Place place : P){
+            plc.add(place.nama);
         }
+        adapterL.notifyDataSetChanged();
+        db.close();
     }
 
     @Override
