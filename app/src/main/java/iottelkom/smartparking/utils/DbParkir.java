@@ -165,7 +165,7 @@ public class DbParkir {
     public ArrayList<String> getAllWilayah(){
         Cursor cur = null;
         ArrayList<String> out = new ArrayList<>();
-        cur = db.rawQuery("SELECT wilayah FROM TABLE_PLACE", null);
+        cur = db.rawQuery("SELECT wilayah FROM TABLE_PLACE GROUP BY wilayah", null);
         if(cur.moveToFirst()){
             do{
                 out.add(cur.getString(0));

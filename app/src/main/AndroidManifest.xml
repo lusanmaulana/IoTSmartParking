@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     package="iottelkom.smartparking">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,20 +20,33 @@
         android:roundIcon="@drawable/icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".LoginActivity">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <activity
+            android:name=".LoginActivity"
+            app:fontFamily="@font/signika"
+            android:gravity="start|center_vertical">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="Smart Parking" />
+            app:fontFamily="@font/signika"
+            android:gravity="start|center_vertical"/>
         <activity
             android:name=".CreateAccount"
-            android:label="Create Account" />
-        <activity android:name=".MenuActivity" />
+            app:fontFamily="@font/signika"
+            android:gravity="start|center_vertical"/>
+        <activity
+            android:name=".MenuActivity"
+            app:fontFamily="@font/signika"
+            android:gravity="start|center_vertical"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -41,13 +55,10 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"/>
+            app:fontFamily="@font/signika"
+            android:gravity="start|center_vertical"/>
     </application>
 
 </manifest>

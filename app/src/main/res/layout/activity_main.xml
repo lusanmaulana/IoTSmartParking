@@ -9,13 +9,13 @@
 
     <GridView
         android:id="@+id/gridview"
-        android:layout_width="fill_parent"
-        android:layout_height="554dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:numColumns="3"
+        android:background="@android:color/holo_orange_dark"
+        android:numColumns="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,23 +23,25 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="356dp"
-        android:layout_height="58dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@android:color/holo_orange_dark"
+        android:gravity="top|start|end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvGedung"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="Nama Gedung"
         android:textSize="28sp"
+        app:fontFamily="@font/signika"
+        app:layout_constraintBottom_toTopOf="@id/gridview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
