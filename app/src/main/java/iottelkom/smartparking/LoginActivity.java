@@ -17,10 +17,6 @@ import es.dmoral.toasty.Toasty;
 import iottelkom.smartparking.utils.SMPreferences;
 import iottelkom.smartparking.utils.DbParkir;
 
-/**
- * Created by kawakibireku on 11/7/17.
- */
-
 public class LoginActivity extends AppCompatActivity{
 
     private EditText etxtUname;

@@ -13,10 +13,6 @@ import java.util.ArrayList;
 import es.dmoral.toasty.Toasty;
 import iottelkom.smartparking.utils.DbParkir;
 
-/**
- * Created by kawakibireku on 11/13/17.
- */
-
 public class CreateAccount extends AppCompatActivity {
     int i;
     int status;

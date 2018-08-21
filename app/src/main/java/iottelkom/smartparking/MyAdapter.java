@@ -10,13 +10,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by kawakibireku on 10/26/17.
- */
 
 public class MyAdapter extends ArrayAdapter {
 
-    ArrayList<Device> devlist = new ArrayList<>();
+    ArrayList<Device> devlist;
 
     public MyAdapter(Context context,int textViewRecourceId, ArrayList objects){
         super(context, textViewRecourceId, objects);
@@ -33,8 +30,8 @@ public class MyAdapter extends ArrayAdapter {
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.devicelist, null);
-        TextView textView = (TextView) v.findViewById(R.id.textView);
-        ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+        TextView textView = v.findViewById(R.id.textView);
+        ImageView imageView = v.findViewById(R.id.imageView);
         textView.setText(devlist.get(position).getdeviceName());
         imageView.setImageResource(devlist.get(position).getdeviceImage());
         return v;
